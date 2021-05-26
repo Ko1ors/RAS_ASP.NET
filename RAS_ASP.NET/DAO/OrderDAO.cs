@@ -1,8 +1,12 @@
-﻿using System;
+﻿using WebApplication.Data.Entities;
+using NHibernate;
+using System.Collections.Generic;
+using System.Linq;
 
-public class Class1
+namespace WebApplication.Data.DAO
 {
-	public Class1()
-	{
-	}
+    public class OrderDAO : GenericDAO<OrderEntity>, IOrderDAO
+    {
+        public OrderDAO(ISession session) : base(session) { }
+    }
 }

@@ -1,8 +1,12 @@
-﻿using System;
+﻿using WebApplication.Data.Entities;
+using NHibernate;
+using System.Collections.Generic;
+using System.Linq;
 
-public class Class1
+namespace WebApplication.Data.DAO
 {
-	public Class1()
-	{
-	}
+    public class SupplyDAO : GenericDAO<SupplyEntity>, ISupplyDAO
+    {
+        public SupplyDAO(ISession session) : base(session) { }
+    }
 }

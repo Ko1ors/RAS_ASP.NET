@@ -1,8 +1,10 @@
-﻿using System;
+﻿using System.Collections.Generic;
+using WebApplication.Data.Entities;
 
-public class Class1
+namespace WebApplication.Data.DAO
 {
-	public Class1()
-	{
-	}
+    public interface IDishDAO : IGenericDAO<DishEntity>
+    {
+
+    }
 }
