@@ -13,11 +13,11 @@ namespace WebApplication.Data.DAO
         public void Add(double price, double weight, int cuisID, int componentCount)
         {
             var result = session.CreateSQLQuery("exec AddDish ?, ?, ?, ?")
-                 .AddEntity(typeof(ComponentEntity))
+                 .AddEntity(typeof(DishEntity))
                   .SetDouble(0, price)
                   .SetDouble(1, weight)
                   .SetInt32(2, cuisID)
-                  .SetInt32(3, componentCount).List<ComponentEntity>();
+                  .SetInt32(3, componentCount).List<DishEntity>();
             Debug.WriteLine(result);
         }
     }

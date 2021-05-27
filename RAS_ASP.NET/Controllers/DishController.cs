@@ -14,6 +14,7 @@ namespace RAS_ASP.NET.Controllers
             using (NHibernate.ISession session = NHibernateManager.OpenSession())
             {
                 var dishes = new DAOFactory(session).GetDishDAO().GetAll();
+                new DishDAO(session).Add(100.20, 1.1, 1, 2);
                 return View(dishes);
             }
         }
