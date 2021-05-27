@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using WebApplication.Controllers;
+using WebApplication.Data.DAO;
+using WebApplication.Data.Entities;
 
 namespace RAS_ASP.NET.Controllers
 {
@@ -12,13 +11,21 @@ namespace RAS_ASP.NET.Controllers
         // GET: DishController
         public ActionResult Index()
         {
-            return View();
+            using (NHibernate.ISession session = NHibernateManager.OpenSession())
+            {
+                var dishes = new DAOFactory(session).GetDishDAO().GetAll();
+                return View(dishes);
+            }
         }
 
         // GET: DishController/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            using (NHibernate.ISession session = NHibernateManager.OpenSession())
+            {
+                var dish = new DAOFactory(session).GetDishDAO().GetById(id);
+                return View(dish);
+            }
         }
 
         // GET: DishController/Create
@@ -30,10 +37,15 @@ namespace RAS_ASP.NET.Controllers
         // POST: DishController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(DishEntity entity)
         {
             try
             {
+                using (NHibernate.ISession session = NHibernateManager.OpenSession())
+                {
+                    new DAOFactory(session).GetDishDAO().SaveOrUpdate(entity);
+                }
+
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -45,16 +57,35 @@ namespace RAS_ASP.NET.Controllers
         // GET: DishController/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            using (NHibernate.ISession session = NHibernateManager.OpenSession())
+            {
+                var dish = new DAOFactory(session).GetDishDAO().GetById(id);
+                return View(dish);
+            }
         }
 
         // POST: DishController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(int id, DishEntity entity)
         {
             try
             {
+                using (NHibernate.ISession session = NHibernateManager.OpenSession())
+                {
+                    var dishDAO = new DAOFactory(session).GetDishDAO();
+                    var dish = dishDAO.GetById(id);
+
+                    dish.Component = entity.Component;
+                    dish.Cuisine = entity.Cuisine;
+                    dish.DishName = entity.DishName;
+                    dish.Order = entity.Order;
+                    dish.Price = entity.Price;
+                    dish.Weight = entity.Weight;
+
+                    dishDAO.SaveOrUpdate(dish);
+                }
+
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -66,16 +97,25 @@ namespace RAS_ASP.NET.Controllers
         // GET: DishController/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            using (NHibernate.ISession session = NHibernateManager.OpenSession())
+            {
+                var dish = new DAOFactory(session).GetDishDAO().GetById(id);
+                return View(dish);
+            }
         }
 
         // POST: DishController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult Delete(int id, DishEntity entity)
         {
             try
             {
+                using (NHibernate.ISession session = NHibernateManager.OpenSession())
+                {
+                    new DAOFactory(session).GetDishDAO().Delete(entity);
+                }
+
                 return RedirectToAction(nameof(Index));
             }
             catch

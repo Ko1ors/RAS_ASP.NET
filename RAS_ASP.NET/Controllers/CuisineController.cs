@@ -4,7 +4,7 @@ using WebApplication.Controllers;
 using WebApplication.Data.DAO;
 using WebApplication.Data.Entities;
 
-namespace WebApplication1.Controllers
+namespace RAS_ASP.NET.Controllers
 {
     public class CuisineController : Controller
     {
