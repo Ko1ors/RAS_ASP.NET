@@ -21,5 +21,30 @@ namespace WebApplication.Data.DAO
         {
             return new RestaurantDAO(session);
         }
+
+        public override IDishDAO GetDishDAO()
+        {
+            return new DishDAO(session);
+        }
+
+        public override IComponentDAO GetComponentDAO()
+        {
+            return new ComponentDAO(session);
+        }
+
+        public override IOrderDAO GetOrderDAO()
+        {
+            return new OrderDAO(session);
+        }
+
+        public override ISupplyDAO GetSupplyDAO()
+        {
+            return new SupplyDAO(session);
+        }
+
+        public override IProductDAO GetProductDAO()
+        {
+            return new ProductDAO(session);
+        }
     }
 }

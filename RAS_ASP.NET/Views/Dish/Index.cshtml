@@ -22,6 +22,10 @@
                 @Html.DisplayNameFor(model => model.Weight)
             </th>
             <th>
+                @Html.DisplayName("Cuisine ")
+                @Html.DisplayNameFor(model => model.Cuisine.ID)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.ID)
             </th>
             <th></th>
@@ -40,12 +44,15 @@
                 @Html.DisplayFor(modelItem => item.Weight)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.Cuisine)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.ID)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                @Html.ActionLink("Edit", "Edit", new { id = item.ID  }) |
+                @Html.ActionLink("Details", "Details", new { id = item.ID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.ID })
             </td>
         </tr>
 }
