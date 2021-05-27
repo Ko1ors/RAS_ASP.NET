@@ -16,5 +16,7 @@ namespace WebApplication.Data.Entities
 
         public virtual int? DishesSummary { get; set; }
 
+        public virtual IList<DishEntity> Dishes { get; set; }
+
     }
 }

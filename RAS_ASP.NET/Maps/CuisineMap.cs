@@ -14,6 +14,7 @@ namespace WebApplication.Maps
             Map(e => e.AverageDish).Column("average_dish");
             Map(e => e.DishesSummary).Column("sumDishes");
             References(e => e.Restaurant).ForeignKey().Column("restaurant_restID");
+            HasMany(e => e.Dishes).Inverse().Cascade.All().KeyColumn("cuisine_cuisID");
         }
     }
 }
