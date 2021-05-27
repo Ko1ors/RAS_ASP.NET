@@ -1,5 +1,9 @@
 ﻿using WebApplication.Data.Entities;
 using NHibernate;
+using RAS_ASP.NET.Models;
+using System.Diagnostics;
+using System.Linq;
+using System;
 
 namespace WebApplication.Data.DAO
 {
@@ -14,6 +18,15 @@ namespace WebApplication.Data.DAO
                 + " WHERE restaurant.restID=" + restID + " and cuisine.name='" + name + "'")
                 .AddEntity("Cuisine", typeof(CuisineEntity)).List<CuisineEntity>();
             return list[0];
+        }
+
+        public CuisineTotalRecord GetTotalPrice(int cuisID)
+        {
+            var result = session.CreateSQLQuery("Call GetTotalPriceIN (?)")
+                  .SetInt32(0, cuisID).List<object[]>().FirstOrDefault();
+            if (result.Length == 2)     
+                return new CuisineTotalRecord() { TotalPrice = (decimal)result[0], TotalDish = Convert.ToInt32(result[1]) };
+            return new CuisineTotalRecord();
         }
     }
 }

@@ -10,7 +10,7 @@ namespace Sample.CustomerService.Maps
 
         public DishMap()
         {
-            Table("cuisine");
+            Table("dish");
             Id(e => e.ID).GeneratedBy.Assigned().Column("dishID");
             Map(e => e.DishName).Column("dish_name");
             Map(e => e.Price).Column("price");
