@@ -7,7 +7,7 @@ namespace RAS_ASP.NET.Models
 {
     public enum PaymentType
     {
-        CASH,
-        CARD
+        cash,
+        card
     }
 }

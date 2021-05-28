@@ -1,4 +1,5 @@
 using FluentNHibernate.Mapping;
+using RAS_ASP.NET.Models;
 using WebApplication.Data.Entities;
 
 namespace Sample.CustomerService.Maps
@@ -9,9 +10,9 @@ namespace Sample.CustomerService.Maps
 
         public OrderMap()
         {
-            Table("order");
+            Table("``order``");
             Id(e => e.ID).GeneratedBy.Assigned().Column("orderID");
-            Map(e => e.PayType).Column("pay_type");
+            Map(e => e.PayType).Column("pay_type").CustomType<GenericEnumMapper<PaymentType>>();
             Map(e => e.Date).Column("date");
             References(e => e.Dish).ForeignKey().Column("dish_dishID");
 
