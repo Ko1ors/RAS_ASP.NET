@@ -23,6 +23,11 @@
                 <span asp-validation-for="Date" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label class="control-label">Dish ID</label>
+                <input asp-for="Dish.ID" class="form-control" />
+                <span asp-validation-for="Dish.ID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="ID" class="control-label"></label>
                 <input asp-for="ID" class="form-control" />
                 <span asp-validation-for="ID" class="text-danger"></span>
@@ -40,4 +45,5 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/js/validationlocalization.js"></script>
 }

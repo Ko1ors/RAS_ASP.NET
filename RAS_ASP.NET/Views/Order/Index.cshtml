@@ -19,6 +19,10 @@
                 @Html.DisplayNameFor(model => model.Date)
             </th>
             <th>
+                @Html.DisplayName("Dish ")
+                @Html.DisplayNameFor(model => model.Dish.ID)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.ID)
             </th>
             <th></th>
@@ -34,12 +38,15 @@
                 @Html.DisplayFor(modelItem => item.Date)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.Dish.ID)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.ID)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+                @Html.ActionLink("Details", "Details", new { id = item.ID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.ID })
             </td>
         </tr>
 }
