@@ -77,7 +77,6 @@ namespace RAS_ASP.NET.Controllers
                     var supply = supplyDAO.GetById(id);
 
                     supply.Date = entity.Date;
-                    supply.Name = entity.Name;
                     supply.ProdQuantity = entity.ProdQuantity;
                     supply.Product = entity.Product;
                     supplyDAO.SaveOrUpdate(supply);
