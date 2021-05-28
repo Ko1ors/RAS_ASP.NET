@@ -6,44 +6,44 @@ using WebApplication.Data.Entities;
 
 namespace RAS_ASP.NET.Controllers
 {
-    public class DishController : Controller
+    public class OrderController : Controller
     {
-        // GET: DishController
+        // GET: OrderController
         public ActionResult Index()
         {
             using (NHibernate.ISession session = NHibernateManager.OpenSession())
             {
-                var dishes = new DAOFactory(session).GetDishDAO().GetAll();
-                return View(dishes);
+                var orders = new DAOFactory(session).GetOrderDAO().GetAll();
+                return View(orders);
             }
         }
 
-        // GET: DishController/Details/5
+        // GET: OrderController/Details/5
         public ActionResult Details(int id)
         {
             using (NHibernate.ISession session = NHibernateManager.OpenSession())
             {
-                var dish = new DAOFactory(session).GetDishDAO().GetById(id);
-                return View(dish);
+                var order = new DAOFactory(session).GetOrderDAO().GetById(id);
+                return View(order);
             }
         }
 
-        // GET: DishController/Create
+        // GET: OrderController/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: DishController/Create
+        // POST: OrderController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(DishEntity entity)
+        public ActionResult Create(OrderEntity entity)
         {
             try
             {
                 using (NHibernate.ISession session = NHibernateManager.OpenSession())
                 {
-                    new DAOFactory(session).GetDishDAO().SaveOrUpdate(entity);
+                    new DAOFactory(session).GetOrderDAO().SaveOrUpdate(entity);
                 }
 
                 return RedirectToAction(nameof(Index));
@@ -54,36 +54,32 @@ namespace RAS_ASP.NET.Controllers
             }
         }
 
-        // GET: DishController/Edit/5
+        // GET: OrderController/Edit/5
         public ActionResult Edit(int id)
         {
             using (NHibernate.ISession session = NHibernateManager.OpenSession())
             {
-                var dish = new DAOFactory(session).GetDishDAO().GetById(id);
-                return View(dish);
+                var order = new DAOFactory(session).GetOrderDAO().GetById(id);
+                return View(order);
             }
         }
 
-        // POST: DishController/Edit/5
+        // POST: OrderController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, DishEntity entity)
+        public ActionResult Edit(int id, OrderEntity entity)
         {
             try
             {
                 using (NHibernate.ISession session = NHibernateManager.OpenSession())
                 {
-                    var dishDAO = new DAOFactory(session).GetDishDAO();
-                    var dish = dishDAO.GetById(id);
+                    var orderDAO = new DAOFactory(session).GetOrderDAO();
+                    var order = orderDAO.GetById(id);
 
-                    dish.Component = entity.Component;
-                    dish.Cuisine = entity.Cuisine;
-                    dish.DishName = entity.DishName;
-                    dish.Order = entity.Order;
-                    dish.Price = entity.Price;
-                    dish.Weight = entity.Weight;
-
-                    dishDAO.SaveOrUpdate(dish);
+                    order.Date = entity.Date;
+                    order.Dish = entity.Dish;
+                    order.PayType = entity.PayType;
+                    orderDAO.SaveOrUpdate(order);
                 }
 
                 return RedirectToAction(nameof(Index));
@@ -94,26 +90,26 @@ namespace RAS_ASP.NET.Controllers
             }
         }
 
-        // GET: DishController/Delete/5
+        // GET: OrderController/Delete/5
         public ActionResult Delete(int id)
         {
             using (NHibernate.ISession session = NHibernateManager.OpenSession())
             {
-                var dish = new DAOFactory(session).GetDishDAO().GetById(id);
-                return View(dish);
+                var order = new DAOFactory(session).GetOrderDAO().GetById(id);
+                return View(order);
             }
         }
 
-        // POST: DishController/Delete/5
+        // POST: OrderController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, DishEntity entity)
+        public ActionResult Delete(int id, OrderEntity entity)
         {
             try
             {
                 using (NHibernate.ISession session = NHibernateManager.OpenSession())
                 {
-                    new DAOFactory(session).GetDishDAO().Delete(entity);
+                    new DAOFactory(session).GetOrderDAO().Delete(entity);
                 }
 
                 return RedirectToAction(nameof(Index));
