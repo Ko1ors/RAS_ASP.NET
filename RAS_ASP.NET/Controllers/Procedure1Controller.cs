@@ -25,26 +25,22 @@ namespace RAS_ASP.NET.Controllers
             {
                 using (NHibernate.ISession session = NHibernateManager.OpenSession())
                 {
+                    var factory = new DAOFactory(session);
                     if (entity.UseCheck)
                     {
-                        if(new DAOFactory(session).GetOrderDAO().CreateWithCheck((int)entity.Dish.ID, entity.PayType))
-                        {
+                        if(factory.GetOrderDAO().CreateWithCheck((int)entity.Dish.ID, entity.PayType))
                             entity.Status = "Successful";
-                        } 
                         else
-                        {
-                            entity.Status = "Error";
-                        }
+                            entity.Status = "Error: Not enough products available";
                     } 
                     else
                     {
-                        new DAOFactory(session).GetOrderDAO().Create((int)entity.Dish.ID, entity.PayType);
-                        if(new DAOFactory(session).GetDishDAO().GetById((int)entity.Dish.ID) == null)
-                        {
-                            entity.Status = "Error";
-                        }
+                        
+                        if(factory.GetDishDAO().GetById((int)entity.Dish.ID) == null)
+                            entity.Status = "Error: dish with the setted id was not found";
                         else
                         {
+                            factory.GetOrderDAO().Create((int)entity.Dish.ID, entity.PayType);
                             entity.Status = "Successful";
                         }
                     }
@@ -54,7 +50,8 @@ namespace RAS_ASP.NET.Controllers
             }
             catch
             {
-                return View();
+                entity.Status = "Error";
+                return View(entity);
             }
         }
     }
