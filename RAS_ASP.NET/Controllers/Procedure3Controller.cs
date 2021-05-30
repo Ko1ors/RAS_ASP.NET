@@ -25,7 +25,10 @@ namespace RAS_ASP.NET.Controllers
                 using (NHibernate.ISession session = NHibernateManager.OpenSession())
                 {
                     entity.CuisineTotalRecord = new DAOFactory(session).GetCuisineDAO().GetTotalPrice(entity.ID);
-                    entity.Status = "Successful";
+                    if(!entity.CuisineTotalRecord.IsEmpty)
+                        entity.Status = "Successful";
+                    else
+                        entity.Status = "Error";
                 }
                 return View(entity);
             }

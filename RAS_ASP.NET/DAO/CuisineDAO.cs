@@ -24,7 +24,7 @@ namespace WebApplication.Data.DAO
         {
             var result = session.CreateSQLQuery("Call GetTotalPriceIN (?)")
                   .SetInt32(0, cuisID).List<object[]>().FirstOrDefault();
-            if (result.Length == 2)     
+            if (result.Length == 2 && result[0] != null)     
                 return new CuisineTotalRecord() { TotalPrice = (decimal)result[0], TotalDish = Convert.ToInt32(result[1]) };
             return new CuisineTotalRecord();
         }
