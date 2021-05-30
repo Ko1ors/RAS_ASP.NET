@@ -5,6 +5,6 @@ namespace WebApplication.Data.DAO
 {
     public interface IDishDAO : IGenericDAO<DishEntity>
     {
-        List<ComponentEntity> Add(double price, double weight, int cuisID, int componentCount);
+        List<ComponentEntity> Add(double? price, double? weight, int cuisID, int componentCount);
     }
 }

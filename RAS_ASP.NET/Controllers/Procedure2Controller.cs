@@ -23,11 +23,10 @@ namespace RAS_ASP.NET.Controllers
         {
             try
             {
-                //public IList<ComponentEntity> Component;
                 using (NHibernate.ISession session = NHibernateManager.OpenSession())
                 {
                     var factory = new DAOFactory(session);
-                    factory.GetDishDAO().Add((double)entity.Price, (double)entity.Weight, 
+                    factory.GetDishDAO().Add(entity.Price, entity.Weight, 
                         (int)entity.Cuisine.ID, entity.Component.Count);
                 }
                 return View(entity);

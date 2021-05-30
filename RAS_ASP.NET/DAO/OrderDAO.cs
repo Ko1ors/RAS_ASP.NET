@@ -15,14 +15,14 @@ namespace WebApplication.Data.DAO
         {
             session.CreateSQLQuery("Call CreateOrder (?, ?)")
                  .SetInt32(0, dishID)
-                 .SetEnum(1, payType).List();
+                 .SetString(1, payType.ToString()).List();
         }
 
         public bool CreateWithCheck(int dishID, PaymentType payType)
         {
             var result = session.CreateSQLQuery("Call CreateOrderWithProductCheck (?, ?)")
                  .SetInt32(0, dishID)
-                 .SetEnum(1, payType).List();
+                 .SetString(1, payType.ToString()).List();
 
             return result.Count == 0 ? true : false;
         }

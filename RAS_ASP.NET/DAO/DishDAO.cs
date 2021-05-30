@@ -10,12 +10,12 @@ namespace WebApplication.Data.DAO
     {
         public DishDAO(ISession session) : base(session) { }
 
-        public List<ComponentEntity> Add(double price, double weight, int cuisID, int componentCount)
+        public List<ComponentEntity> Add(double? price, double? weight, int cuisID, int componentCount)
         {
             return session.CreateSQLQuery("Call AddDish (?, ?, ?, ?)")
                  .AddEntity(typeof(ComponentEntity))
-                  .SetDouble(0, price)
-                  .SetDouble(1, weight)
+                  .SetDouble(0, price.GetValueOrDefault())
+                  .SetDouble(1, weight.GetValueOrDefault())
                   .SetInt32(2, cuisID)
                   .SetInt32(3, componentCount).List<ComponentEntity>().ToList();
         }
