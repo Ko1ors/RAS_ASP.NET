@@ -12,25 +12,26 @@ namespace RAS_ASP.NET.Controllers
     {
         public ActionResult Create()
         {
-            return View();
+            return View(new CuisineProcedure());
         }
 
         // POST: Procedure2Controller/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(CuisineEntity entity)
+        public ActionResult Create(CuisineProcedure entity)
         {
             try
             {
                 using (NHibernate.ISession session = NHibernateManager.OpenSession())
                 {
-                    var factory = new DAOFactory(session);
-                    factory.GetCuisineDAO().GetTotalPrice((int)entity.ID);
+                    entity.CuisineTotalRecord = new DAOFactory(session).GetCuisineDAO().GetTotalPrice(entity.ID);
+                    entity.Status = "Successful";
                 }
                 return View(entity);
             }
             catch
             {
+                entity.Status = "Error";
                 return View(entity);
             }
         }

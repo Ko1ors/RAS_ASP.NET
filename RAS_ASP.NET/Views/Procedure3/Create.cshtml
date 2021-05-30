@@ -1,4 +1,4 @@
-﻿@model WebApplication.Data.Entities.CuisineEntity
+﻿@model RAS_ASP.NET.Models.CuisineProcedure
 
 @{
     ViewData["Title"] = "Create";
@@ -20,9 +20,44 @@
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
+            <div>
+                @Html.DisplayFor(model => model.Status)
+            </div>
         </form>
     </div>
-</div>
+
+    @if (Model.ID > 0)
+    {
+        <table id="Table1" runat="server" class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayName("Cuisine ")
+                        @Html.DisplayNameFor(model => model.ID)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CuisineTotalRecord.TotalDish)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CuisineTotalRecord.TotalPrice)
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        @Html.DisplayFor(model => model.ID)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => model.CuisineTotalRecord.TotalDish)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => model.CuisineTotalRecord.TotalPrice)
+                    </td>
+                </tr>
+        </table>
+    }
+    </div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
