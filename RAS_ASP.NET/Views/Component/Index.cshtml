@@ -36,13 +36,13 @@
                 @Html.DisplayFor(modelItem => item.NeedCount)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ID)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.Dish.ID)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Product.ID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ID)
             </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
