@@ -1,4 +1,5 @@
-﻿using WebApplication.Data.DAO;
+﻿using RAS_ASP.NET.DAO;
+using WebApplication.Data.DAO;
 
 namespace WebApplication.DAO
 {
@@ -17,5 +18,7 @@ namespace WebApplication.DAO
         public abstract ISupplyDAO GetSupplyDAO();
 
         public abstract IProductDAO GetProductDAO();
+
+        public abstract IOrderSummaryDAO GetOrderSummaryDAO();
     }
 }

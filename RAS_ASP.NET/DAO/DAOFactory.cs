@@ -1,4 +1,5 @@
 ﻿using NHibernate;
+using RAS_ASP.NET.DAO;
 using WebApplication.DAO;
 
 namespace WebApplication.Data.DAO
@@ -45,6 +46,11 @@ namespace WebApplication.Data.DAO
         public override IProductDAO GetProductDAO()
         {
             return new ProductDAO(session);
+        }
+
+        public override IOrderSummaryDAO GetOrderSummaryDAO()
+        {
+            return new OrderSummaryDAO(session);
         }
     }
 }

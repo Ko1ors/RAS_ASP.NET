@@ -1,0 +1,104 @@
+﻿@model IEnumerable<RAS_ASP.NET.Models.Data.Entities.OrderSummary>
+
+@{
+    ViewData["Title"] = "Order Summary";
+}
+
+<h1>Order Summary</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Dish_dishID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Apr_total)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Aug_total)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Dec_total)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Feb_total)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Jan_total)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Jul_total)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Jun_total)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Mar_total)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.May_total)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Nov_total)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Okt_total)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Sep_total)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Total)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Dish_dishID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Apr_total)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Aug_total)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Dec_total)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Feb_total)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Jan_total)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Jul_total)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Jun_total)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Mar_total)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.May_total)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nov_total)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Okt_total)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Sep_total)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Total)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
