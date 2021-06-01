@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="WebApplication.Data.AbstractEntity">
+    <Position X="15" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Data\Entities\AbstractEntity.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WebApplication.Data.Entities.ComponentEntity">
+    <Position X="12.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAA=</HashCode>
+      <FileName>Models\Data\Entities\ComponentEntity.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WebApplication.Data.Entities.CuisineEntity">
+    <Position X="19.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAAAAAAAAQAAAQAAAACAAAAAAAACAAAAAA=</HashCode>
+      <FileName>Models\Data\Entities\CuisineEntity.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WebApplication.Data.Entities.DishEntity">
+    <Position X="8.25" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACEAAAAAAQCAAAAAAAAAAAAAACAAAAAAAABAAAAAAAA=</HashCode>
+      <FileName>Models\Data\Entities\DishEntity.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WebApplication.Data.Entities.OrderEntity">
+    <Position X="15" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAgAAAAAAAAAAAABAAAAACAAAAA=</HashCode>
+      <FileName>Models\Data\Entities\OrderEntity.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WebApplication.Data.Entities.ProductEntity">
+    <Position X="21.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAQAAAABAAAAABAA=</HashCode>
+      <FileName>Models\Data\Entities\ProductEntity.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WebApplication.Data.Entities.RestaurantEntity">
+    <Position X="10.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAAAAAAAAEAgAAAAQAAAAAAgACAACAIAAAAAA=</HashCode>
+      <FileName>Models\Data\Entities\RestaurantEntity.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WebApplication.Data.Entities.SupplyEntity">
+    <Position X="17.25" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAgAAAAAAAAAAAAAAAAAAABAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Data\Entities\SupplyEntity.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
