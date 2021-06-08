@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using RAS_ASP.NET.Services;
 using WebApplication.Controllers;
 using WebApplication.Data.DAO;
 using WebApplication.Data.Entities;
@@ -8,24 +9,25 @@ namespace RAS_ASP.NET.Controllers
 {
     public class ComponentController : Controller
     {
+        private readonly ComponentService _service;
+
+        public ComponentController()
+        {
+            _service = new ComponentService(this.ModelState, new DAOFactory(NHibernateManager.OpenSession()).GetComponentDAO());
+        }
+
         // GET: ComponentController
         public ActionResult Index()
         {
-            using (NHibernate.ISession session = NHibernateManager.OpenSession())
-            {
-                var components = new DAOFactory(session).GetComponentDAO().GetAll();
-                return View(components);
-            }
+            return View(_service.List());
         }
 
         // GET: ComponentController/Details/5
         public ActionResult Details(int id)
         {
-            using (NHibernate.ISession session = NHibernateManager.OpenSession())
-            {
-                var component = new DAOFactory(session).GetComponentDAO().GetById(id);
-                return View(component);
-            }
+            if (!_service.Exists(id))
+                return View();
+            return View(_service.Get(id));
         }
 
         // GET: ComponentController/Create
@@ -39,29 +41,17 @@ namespace RAS_ASP.NET.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(ComponentEntity entity)
         {
-            try
-            {
-                using (NHibernate.ISession session = NHibernateManager.OpenSession())
-                {
-                    new DAOFactory(session).GetComponentDAO().SaveOrUpdate(entity);
-                }
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
+            if (!_service.Create(entity))
                 return View();
-            }
+            return RedirectToAction("Index");
         }
 
         // GET: ComponentController/Edit/5
         public ActionResult Edit(int id)
         {
-            using (NHibernate.ISession session = NHibernateManager.OpenSession())
-            {
-                var component = new DAOFactory(session).GetComponentDAO().GetById(id);
-                return View(component);
-            }
+            if (!_service.Exists(id))
+                return View();
+            return View(_service.Get(id));
         }
 
         // POST: ComponentController/Edit/5
@@ -69,35 +59,17 @@ namespace RAS_ASP.NET.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, ComponentEntity entity)
         {
-            try
-            {
-                using (NHibernate.ISession session = NHibernateManager.OpenSession())
-                {
-                    var componentDAO = new DAOFactory(session).GetComponentDAO();
-                    var component = componentDAO.GetById(id);
-
-                    component.Dish = entity.Dish;
-                    component.NeedCount = entity.NeedCount;
-                    component.Product = entity.Product;
-                    componentDAO.SaveOrUpdate(component);
-                }
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
+            if (!_service.Edit(id, entity))
                 return View();
-            }
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: ComponentController/Delete/5
         public ActionResult Delete(int id)
         {
-            using (NHibernate.ISession session = NHibernateManager.OpenSession())
-            {
-                var component = new DAOFactory(session).GetComponentDAO().GetById(id);
-                return View(component);
-            }
+            if (!_service.Exists(id))
+                return View();
+            return View(_service.Get(id));
         }
 
         // POST: ComponentController/Delete/5
@@ -105,19 +77,9 @@ namespace RAS_ASP.NET.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, ComponentEntity entity)
         {
-            try
-            {
-                using (NHibernate.ISession session = NHibernateManager.OpenSession())
-                {
-                    new DAOFactory(session).GetComponentDAO().Delete(entity);
-                }
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
+            if (!_service.Delete(entity))
                 return View();
-            }
+            return RedirectToAction(nameof(Index));
         }
     }
 }
