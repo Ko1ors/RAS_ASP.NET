@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using RAS_ASP.NET.Services;
 using WebApplication.Controllers;
 using WebApplication.Data.DAO;
 using WebApplication.Data.Entities;
@@ -8,24 +9,25 @@ namespace RAS_ASP.NET.Controllers
 {
     public class ProductController : Controller
     {
+        private readonly ProductService _service;
+
+        public ProductController()
+        {
+            _service = new ProductService(this.ModelState, new DAOFactory(NHibernateManager.OpenSession()).GetProductDAO());
+        }
+
         // GET: ProductController
         public ActionResult Index()
         {
-            using (NHibernate.ISession session = NHibernateManager.OpenSession())
-            {
-                var products = new DAOFactory(session).GetProductDAO().GetAll();
-                return View(products);
-            }
+            return View(_service.List());
         }
 
         // GET: ProductController/Details/5
         public ActionResult Details(int id)
         {
-            using (NHibernate.ISession session = NHibernateManager.OpenSession())
-            {
-                var product = new DAOFactory(session).GetProductDAO().GetById(id);
-                return View(product);
-            }
+            if (!_service.Exists(id))
+                return View();
+            return View(_service.Get(id));
         }
 
         // GET: ProductController/Create
@@ -39,29 +41,17 @@ namespace RAS_ASP.NET.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(ProductEntity entity)
         {
-            try
-            {
-                using (NHibernate.ISession session = NHibernateManager.OpenSession())
-                {
-                    new DAOFactory(session).GetProductDAO().SaveOrUpdate(entity);
-                }
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
+            if (!_service.Create(entity))
                 return View();
-            }
+            return RedirectToAction("Index");
         }
 
         // GET: ProductController/Edit/5
         public ActionResult Edit(int id)
         {
-            using (NHibernate.ISession session = NHibernateManager.OpenSession())
-            {
-                var product = new DAOFactory(session).GetProductDAO().GetById(id);
-                return View(product);
-            }
+            if (!_service.Exists(id))
+                return View();
+            return View(_service.Get(id));
         }
 
         // POST: ProductController/Edit/5
@@ -69,36 +59,17 @@ namespace RAS_ASP.NET.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, ProductEntity entity)
         {
-            try
-            {
-                using (NHibernate.ISession session = NHibernateManager.OpenSession())
-                {
-                    var productDAO = new DAOFactory(session).GetProductDAO();
-                    var product = productDAO.GetById(id);
-
-                    product.AvailCount = entity.AvailCount;
-                    product.Component = entity.Component;
-                    product.Name = entity.Name;
-                    product.Supply = entity.Supply;
-                    productDAO.SaveOrUpdate(product);
-                }
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
+            if (!_service.Edit(id, entity))
                 return View();
-            }
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: ProductController/Delete/5
         public ActionResult Delete(int id)
         {
-            using (NHibernate.ISession session = NHibernateManager.OpenSession())
-            {
-                var order = new DAOFactory(session).GetOrderDAO().GetById(id);
-                return View(order);
-            }
+            if (!_service.Exists(id))
+                return View();
+            return View(_service.Get(id));
         }
 
         // POST: ProductController/Delete/5
@@ -106,19 +77,9 @@ namespace RAS_ASP.NET.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, ProductEntity entity)
         {
-            try
-            {
-                using (NHibernate.ISession session = NHibernateManager.OpenSession())
-                {
-                    new DAOFactory(session).GetProductDAO().Delete(entity);
-                }
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
+            if (!_service.Delete(entity))
                 return View();
-            }
+            return RedirectToAction(nameof(Index));
         }
     }
 }
