@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using RAS_ASP.NET.Services;
 using WebApplication.Controllers;
 using WebApplication.Data.DAO;
 using WebApplication.Data.Entities;
@@ -8,24 +9,26 @@ namespace RAS_ASP.NET.Controllers
 {
     public class DishController : Controller
     {
+        private readonly DishService _service;
+
+        public DishController()
+        {
+            _service = new DishService(this.ModelState, new DAOFactory(NHibernateManager.OpenSession()).GetDishDAO());
+        }
+
+
         // GET: DishController
         public ActionResult Index()
         {
-            using (NHibernate.ISession session = NHibernateManager.OpenSession())
-            {
-                var dishes = new DAOFactory(session).GetDishDAO().GetAll();
-                return View(dishes);
-            }
+            return View(_service.List());
         }
 
         // GET: DishController/Details/5
         public ActionResult Details(int id)
         {
-            using (NHibernate.ISession session = NHibernateManager.OpenSession())
-            {
-                var dish = new DAOFactory(session).GetDishDAO().GetById(id);
-                return View(dish);
-            }
+            if (!_service.Exists(id))
+                return View();
+            return View(_service.Get(id));
         }
 
         // GET: DishController/Create
@@ -39,29 +42,17 @@ namespace RAS_ASP.NET.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(DishEntity entity)
         {
-            try
-            {
-                using (NHibernate.ISession session = NHibernateManager.OpenSession())
-                {
-                    new DAOFactory(session).GetDishDAO().SaveOrUpdate(entity);
-                }
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
+            if (!_service.Create(entity))
                 return View();
-            }
+            return RedirectToAction("Index");
         }
 
         // GET: DishController/Edit/5
         public ActionResult Edit(int id)
         {
-            using (NHibernate.ISession session = NHibernateManager.OpenSession())
-            {
-                var dish = new DAOFactory(session).GetDishDAO().GetById(id);
-                return View(dish);
-            }
+            if (!_service.Exists(id))
+                return View();
+            return View(_service.Get(id));
         }
 
         // POST: DishController/Edit/5
@@ -69,39 +60,17 @@ namespace RAS_ASP.NET.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, DishEntity entity)
         {
-            try
-            {
-                using (NHibernate.ISession session = NHibernateManager.OpenSession())
-                {
-                    var dishDAO = new DAOFactory(session).GetDishDAO();
-                    var dish = dishDAO.GetById(id);
-
-                    dish.Component = entity.Component;
-                    dish.Cuisine = entity.Cuisine;
-                    dish.DishName = entity.DishName;
-                    dish.Order = entity.Order;
-                    dish.Price = entity.Price;
-                    dish.Weight = entity.Weight;
-
-                    dishDAO.SaveOrUpdate(dish);
-                }
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
+            if (!_service.Edit(id, entity))
                 return View();
-            }
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: DishController/Delete/5
         public ActionResult Delete(int id)
         {
-            using (NHibernate.ISession session = NHibernateManager.OpenSession())
-            {
-                var dish = new DAOFactory(session).GetDishDAO().GetById(id);
-                return View(dish);
-            }
+            if (!_service.Exists(id))
+                return View();
+            return View(_service.Get(id));
         }
 
         // POST: DishController/Delete/5
@@ -109,19 +78,9 @@ namespace RAS_ASP.NET.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, DishEntity entity)
         {
-            try
-            {
-                using (NHibernate.ISession session = NHibernateManager.OpenSession())
-                {
-                    new DAOFactory(session).GetDishDAO().Delete(entity);
-                }
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
+            if (!_service.Delete(entity))
                 return View();
-            }
+            return RedirectToAction(nameof(Index));
         }
     }
 }
