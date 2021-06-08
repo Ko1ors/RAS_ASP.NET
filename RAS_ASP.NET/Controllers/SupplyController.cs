@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using RAS_ASP.NET.Services;
 using WebApplication.Controllers;
 using WebApplication.Data.DAO;
 using WebApplication.Data.Entities;
@@ -8,24 +8,25 @@ namespace RAS_ASP.NET.Controllers
 {
     public class SupplyController : Controller
     {
+        private readonly SupplyService _service;
+
+        public SupplyController()
+        {
+            _service = new SupplyService(this.ModelState, new DAOFactory(NHibernateManager.OpenSession()).GetSupplyDAO());
+        }
+
         // GET: SupplyController
         public ActionResult Index()
         {
-            using (NHibernate.ISession session = NHibernateManager.OpenSession())
-            {
-                var supplies = new DAOFactory(session).GetSupplyDAO().GetAll();
-                return View(supplies);
-            }
+            return View(_service.List());
         }
 
         // GET: SupplyController/Details/5
         public ActionResult Details(int id)
         {
-            using (NHibernate.ISession session = NHibernateManager.OpenSession())
-            {
-                var supply = new DAOFactory(session).GetSupplyDAO().GetById(id);
-                return View(supply);
-            }
+            if (!_service.Exists(id))
+                return View();
+            return View(_service.Get(id));
         }
 
         // GET: SupplyController/Create
@@ -39,29 +40,17 @@ namespace RAS_ASP.NET.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(SupplyEntity entity)
         {
-            try
-            {
-                using (NHibernate.ISession session = NHibernateManager.OpenSession())
-                {
-                    new DAOFactory(session).GetSupplyDAO().SaveOrUpdate(entity);
-                }
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
+            if (!_service.Create(entity))
                 return View();
-            }
+            return RedirectToAction("Index");
         }
 
         // GET: SupplyController/Edit/5
         public ActionResult Edit(int id)
         {
-            using (NHibernate.ISession session = NHibernateManager.OpenSession())
-            {
-                var supply = new DAOFactory(session).GetSupplyDAO().GetById(id);
-                return View(supply);
-            }
+            if (!_service.Exists(id))
+                return View();
+            return View(_service.Get(id));
         }
 
         // POST: SupplyController/Edit/5
@@ -69,35 +58,17 @@ namespace RAS_ASP.NET.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, SupplyEntity entity)
         {
-            try
-            {
-                using (NHibernate.ISession session = NHibernateManager.OpenSession())
-                {
-                    var supplyDAO = new DAOFactory(session).GetSupplyDAO();
-                    var supply = supplyDAO.GetById(id);
-
-                    supply.Date = entity.Date;
-                    supply.ProdQuantity = entity.ProdQuantity;
-                    supply.Product = entity.Product;
-                    supplyDAO.SaveOrUpdate(supply);
-                }
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
+            if (!_service.Edit(id, entity))
                 return View();
-            }
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: SupplyController/Delete/5
         public ActionResult Delete(int id)
         {
-            using (NHibernate.ISession session = NHibernateManager.OpenSession())
-            {
-                var supply = new DAOFactory(session).GetSupplyDAO().GetById(id);
-                return View(supply);
-            }
+            if (!_service.Exists(id))
+                return View();
+            return View(_service.Get(id));
         }
 
         // POST: SupplyController/Delete/5
@@ -105,19 +76,9 @@ namespace RAS_ASP.NET.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, SupplyEntity entity)
         {
-            try
-            {
-                using (NHibernate.ISession session = NHibernateManager.OpenSession())
-                {
-                    new DAOFactory(session).GetSupplyDAO().Delete(entity);
-                }
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
+            if (!_service.Delete(entity))
                 return View();
-            }
+            return RedirectToAction(nameof(Index));
         }
     }
 }
