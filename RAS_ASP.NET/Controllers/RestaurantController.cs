@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using RAS_ASP.NET.Services;
 using WebApplication.Controllers;
 using WebApplication.Data.DAO;
 using WebApplication.Data.Entities;
@@ -8,24 +8,31 @@ namespace RAS_ASP.NET.Controllers
 {
     public class RestaurantController : Controller
     {
-        // GET: RestaurantController
+        private readonly RestaurantService _service;
+
+
+        public RestaurantController()
+        {
+            _service = new RestaurantService(this.ModelState, new DAOFactory(NHibernateManager.OpenSession()).GetRestaurantDAO());
+        }
+
+
+        /*public RestaurantController(RestaurantService service)
+        {
+            _service = service;
+        }*/
+
         public ActionResult Index()
         {
-            using (NHibernate.ISession session = NHibernateManager.OpenSession())
-            {
-                var restaurants = new DAOFactory(session).GetRestaurantDAO().GetAll();
-                return View(restaurants);
-            }
+            return View(_service.List());
         }
 
         // GET: RestaurantController/Details/5
         public ActionResult Details(int id)
         {
-            using (NHibernate.ISession session = NHibernateManager.OpenSession())
-            {
-                var restaurant = new DAOFactory(session).GetRestaurantDAO().GetRestaurantByID(id);
-                return View(restaurant);
-            }
+            if (!_service.Exists(id))
+                return View();
+            return View(_service.Get(id));
         }
 
         // GET: RestaurantController/Create
@@ -39,29 +46,17 @@ namespace RAS_ASP.NET.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(RestaurantEntity entity)
         {
-            try
-            {
-                using (NHibernate.ISession session = NHibernateManager.OpenSession())
-                {
-                    new DAOFactory(session).GetRestaurantDAO().SaveOrUpdate(entity);
-                }
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
+            if (!_service.Create(entity))
                 return View();
-            }
+            return RedirectToAction("Index");
         }
 
         // GET: RestaurantController/Edit/5
         public ActionResult Edit(int id)
         {
-            using (NHibernate.ISession session = NHibernateManager.OpenSession())
-            {
-                var restaurant = new DAOFactory(session).GetRestaurantDAO().GetRestaurantByID(id);
-                return View(restaurant);
-            }
+            if (!_service.Exists(id))
+                return View();
+            return View(_service.Get(id));
         }
 
         // POST: RestaurantController/Edit/5
@@ -69,40 +64,17 @@ namespace RAS_ASP.NET.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, RestaurantEntity entity)
         {
-            try
-            {
-                using (NHibernate.ISession session = NHibernateManager.OpenSession())
-                {
-                    var restDAO = new DAOFactory(session).GetRestaurantDAO();
-                    var restaurant = restDAO.GetRestaurantByID(id);
-
-                    restaurant.Address = entity.Address;
-                    restaurant.CloseTime = entity.CloseTime;
-                    restaurant.CooksSummary = entity.CooksSummary;
-                    restaurant.Cuisines = entity.Cuisines;
-                    restaurant.Name = entity.Name;
-                    restaurant.OpenTime = entity.OpenTime;
-                    restaurant.SeatCapacity = entity.SeatCapacity;
-
-                    restDAO.SaveOrUpdate(restaurant);
-                }
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
+            if (!_service.Edit(id, entity))
                 return View();
-            }
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: RestaurantController/Delete/5
         public ActionResult Delete(int id)
         {
-            using (NHibernate.ISession session = NHibernateManager.OpenSession())
-            {
-                var restaurant = new DAOFactory(session).GetRestaurantDAO().GetRestaurantByID(id);
-                return View(restaurant);
-            }
+            if (!_service.Exists(id))
+                return View();
+            return View(_service.Get(id));
         }
 
         // POST: RestaurantController/Delete/5
@@ -110,18 +82,9 @@ namespace RAS_ASP.NET.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, RestaurantEntity entity)
         {
-            try
-            {
-                using (NHibernate.ISession session = NHibernateManager.OpenSession())
-                {
-                   new DAOFactory(session).GetRestaurantDAO().Delete(entity); 
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
+            if (!_service.Delete(entity))
                 return View();
-            }
+            return RedirectToAction(nameof(Index));
         }
     }
 }
